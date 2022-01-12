@@ -1,5 +1,5 @@
 const auth = async (req, res, next) => {
-  console.log("middleware");
+  console.log("Create the middleware");
   next();
 };
 
