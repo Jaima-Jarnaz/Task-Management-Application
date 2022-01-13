@@ -3,18 +3,8 @@ const User = require("../models/users");
 const auth = require("../middleware/auth");
 const router = new express.Router();
 
-router.post("/users/login", async (req, res) => {
-  try {
-    const user = await User.findByCredentials(
-      req.body.email,
-      req.body.password
-    );
-    const token = await user.generateAuthToken();
-
-    res.send({ user, token });
-  } catch (error) {
-    res.status(400).send("Bad Request!!!!!!!!");
-  }
+router.get("/users/login/me", auth, async (req, res) => {
+  res.send(req.user);
 });
 
 router.post("/users/create", (req, res) => {
@@ -28,7 +18,7 @@ router.post("/users/create", (req, res) => {
       res.send(error);
     });
 });
-router.get("/users", auth, async (req, res) => {
+router.get("/users", async (req, res) => {
   // User.find({})
   //   .then((users) => {
   //     res.send(users);
@@ -108,5 +98,19 @@ router.delete("/users/delete/:id", async (req, res) => {
     res.status(400).send(error);
   }
 });
+
+// router.post("/users/login/me", async (req, res) => {
+//   try {
+//     const user = await User.findByCredentials(
+//       req.body.email,
+//       req.body.password
+//     );
+//     const token = await user.generateAuthToken();
+
+//     res.send({ user, token });
+//   } catch (error) {
+//     res.status(400).send("Bad Request!!!!!!!!");
+//   }
+// });
 
 module.exports = router;
